@@ -1,0 +1,5 @@
+@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: dracula, winter;
+}
