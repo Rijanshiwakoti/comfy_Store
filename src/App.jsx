@@ -12,10 +12,27 @@ import {
   Register,
   SingleProduct,
 } from "./Pages";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { store } from "./store";
 
 import { loader as landingLoader } from "./Pages/Landing";
+import { loader as checkoutLoader } from "./Pages/Checkout";
 import { loader as singleProductLoader } from "./Pages/SingleProduct";
 import { loader as productLoader } from "./Pages/Products";
+import { loader as orderLoader } from "./Pages/Orders";
+// actions
+import { action as register } from "./Pages/Register";
+import { action as login } from "./Pages/Login";
+import { action as checkoutAction } from "./Components/CheckoutForm";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -26,7 +43,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
-        loader: landingLoader,
+        loader: landingLoader(queryClient),
       },
       {
         path: "about",
@@ -39,20 +56,23 @@ const router = createBrowserRouter([
       {
         path: "checkout",
         element: <Checkout />,
+        loader: checkoutLoader(store),
+        action: checkoutAction(store, queryClient),
       },
       {
         path: "orders",
         element: <Orders />,
+        loader: orderLoader(store, queryClient),
       },
       {
         path: "products",
         element: <Products />,
-        loader: productLoader,
+        loader: productLoader(queryClient),
       },
       {
         path: "products/:id",
         element: <SingleProduct />,
-        loader: singleProductLoader,
+        loader: singleProductLoader(queryClient),
       },
     ],
   },
@@ -60,16 +80,23 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
     errorElement: <Error />,
+    action: login(store),
   },
   {
     path: "/register",
     element: <Register />,
     errorElement: <Error />,
+    action: register,
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />;
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
