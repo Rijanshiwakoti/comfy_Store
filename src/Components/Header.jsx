@@ -9,6 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userState.user);
+  console.log(user);
 
   const queryClient = useQueryClient();
   const handleLogout = async () => {
@@ -20,7 +21,7 @@ const Header = () => {
   return (
     <header className="bg-neutral py-2 text-neutral-content">
       <div className="max-w-6xl px-8 mx-auto flex justify-center sm:justify-end">
-        {user ? (
+        {user?.username ? (
           <div className="flex gap-x-2 sm:gap-x-8 items-center">
             <p className="text-xs sm:text-sm">Hello, {user.username}</p>
             <button
@@ -40,8 +41,6 @@ const Header = () => {
             </Link>
           </div>
         )}
-        {/* USER */}
-        {/* lINKS */}
       </div>
     </header>
   );

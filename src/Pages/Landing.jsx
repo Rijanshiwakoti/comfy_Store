@@ -12,7 +12,6 @@ const FeaturedProductsQuery = {
 
 export const loader = (queryClient) => async () => {
   const response = await queryClient.ensureQueryData(FeaturedProductsQuery);
-  console.log(response.data.data);
 
   const products = response.data.data;
   return { products };

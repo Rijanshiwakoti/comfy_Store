@@ -14,7 +14,10 @@ export const action =
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     try {
-      const response = await customFetch("/auth/local", data);
+      const response = await customFetch.post("/auth/local", data);
+      console.log();
+
+      console.log(response);
       store.dispatch(loginUser(response.data));
       toast.success("logged in successfully");
       return redirect("/");

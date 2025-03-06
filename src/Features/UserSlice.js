@@ -10,6 +10,7 @@ const getThemeFromLocalStorage = () => {
   return theme;
 };
 const getUserFromLocalStorage = () => {
+  console.log(localStorage.getItem("user"));
   return JSON.stringify(localStorage.getItem("user")) || null;
 };
 
